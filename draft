@@ -1,0 +1,15 @@
+---superuser
+# python manage.py createsuperuser
+Email: admin2@mail.com
+username: admin
+Password: ende33
+-------------------------------------------------
+---user
+Username:max
+Password: it111222
+Email:elon@mail.com
+-------------------------------------------------
+---anna
+anna@gmx.de
+Password: anna1112223
+-------------------------------------------------

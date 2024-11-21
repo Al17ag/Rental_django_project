@@ -2,8 +2,8 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
-# Модель пользователя с добавлением поля email
-class CustomUser(AbstractUser):                         # кастомную модель пользователя
+# Кастомная модель пользователя
+class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
     groups = models.ManyToManyField(
         'auth.Group',

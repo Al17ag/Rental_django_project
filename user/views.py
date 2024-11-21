@@ -38,7 +38,7 @@ def login_view(request):
 
 # Представление для логаута
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])  #ограничения доступа только для аутентифицированных пользователей
+@permission_classes([IsAuthenticated])                 #ограничения доступа только для аутентифицированных пользователей
 def logout_view(request):
     logout(request)
     return Response({'message': 'Logged out successfully'}, status=status.HTTP_200_OK)

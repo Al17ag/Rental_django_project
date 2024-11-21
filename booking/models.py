@@ -9,7 +9,7 @@ class Booking(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
     start_date = models.DateField(default=date.today)                       # Дата начала бронирования по умолчанию
-    end_date = models.DateField(default=date.today() + timedelta(days=1))  # Дата окончания бронирования по умолчанию
+    end_date = models.DateField(default=date.today() + timedelta(days=1))   # Дата окончания бронирования по умолчанию
     booking_date = models.DateTimeField(auto_now_add=True)                  # Дата создания бронирования
     status = models.CharField(max_length=50, choices=[('confirmed', 'Confirmed'), ('canceled', 'Canceled')])
 
@@ -25,7 +25,7 @@ class Booking(models.Model):
             listing=self.listing,
             start_date__lt=self.end_date,
             end_date__gt=self.start_date
-        )
+        ).exclude(id=self.id)
         if overlapping_bookings.exists():
             raise ValidationError("Это жилье уже забронировано на указанный период.")
 

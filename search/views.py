@@ -22,15 +22,15 @@ class SearchListView(generics.ListAPIView):
 
         # Фильтрация по разным критериям
         if min_price:
-            queryset = queryset.filter(price__gte=min_price)        # Фил по минимальной цене
+            queryset = queryset.filter(price__gte=min_price)        # Фильтр по минимальной цене
         if max_price:
-            queryset = queryset.filter(price__lte=max_price)        # Фил по максимальной цене
+            queryset = queryset.filter(price__lte=max_price)        # Фильтр по максимальной цене
         if location:
             queryset = queryset.filter(location__icontains=location)
         if rooms:
             queryset = queryset.filter(rooms__gte=rooms)
         if property_type:
-            queryset = queryset.filter(property_type__icontains=property_type)  # Фильт по типу недвижимости
+            queryset = queryset.filter(property_type__icontains=property_type)  # Фильтр по типу недвижимости
 
         # Сортировка
         if sort_by in ['title', 'price', 'created_at']:

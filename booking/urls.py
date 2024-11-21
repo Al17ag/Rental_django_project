@@ -4,7 +4,7 @@ from .views import BookingViewSet
 
 app_name = 'booking'
 
-# Создание роутера и регистрация ViewSet для бронирований
+#  регистрация ViewSet для бронирований
 router = DefaultRouter()
 router.register(r'bookings', BookingViewSet)
 

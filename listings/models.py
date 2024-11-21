@@ -22,10 +22,20 @@ class Listing(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     status = models.BooleanField(default=True)
     date_added = models.DateTimeField(auto_now_add=True)
+    popularity = models.FloatField(default=0)  # Поле для среднего рейтинга
 
-    # добавлены 2 строки
     def __str__(self):
         return self.title
+
+    # Метод для получения среднего рейтинга
+    def get_average_rating(self):
+        ratings = self.rating_set.all()
+        return ratings.aggregate(models.Avg('rating'))['rating__avg'] if ratings else 0
+
+    # Метод для обновления популярности
+    def update_popularity(self):
+        self.popularity = self.get_average_rating()
+        self.save()
 
 
 # Модель рейтинга объявлений
@@ -35,3 +45,7 @@ class Rating(models.Model):
     rating = models.IntegerField()
     review = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.listing.update_popularity()

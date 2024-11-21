@@ -16,7 +16,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECURITY WARNING: don't run with debug turned on in production!
 SECRET_KEY = os.getenv('SECRET_KEY')
-DEBUG = os.getenv('DEBUG') == 'True'            #режим отладки из переменных окружения
+DEBUG = os.getenv('DEBUG') == 'True'            # режим отладки из переменных окружения
 ALLOWED_HOSTS = ['*']                           # Разрешаем всем хостам доступ к проекту
 
 
@@ -73,10 +73,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'rental.wsgi.application'
 
+# BrowsableAPIRenderer встроен в Django REST framework и позволяет тестировать
+# API запросы в браузере без дополнительных установок
 
 REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
+    
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -136,10 +145,10 @@ AUTH_USER_MODEL = 'user.CustomUser'
 # Используется стандартный бэкенд аутентификации Django
 AUTHENTICATION_BACKENDS = ( 'django.contrib.auth.backends.ModelBackend', )
 
-# Настройки для библиотеки Simple JWT
+# Настройки для библиотеки Simple JWT-----------------------------------------------------------------------------------
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),      # Время жизни access-токена (5 минут)
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),        # Время жизни refresh-токена (1 день)
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=180),      # Время жизни access-токена ( минут)
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=5),          # Время жизни refresh-токена ( день)
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,
     'UPDATE_LAST_LOGIN': False,
@@ -163,8 +172,8 @@ SIMPLE_JWT = {
     'JTI_CLAIM': 'jti',
 
     'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
-    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),         # Время жизни скользящего access-токена
-    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),    # Время жизни скользящего refresh-токена
+    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=180),         # Время жизни скользящего access-токена
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=5),      # Время жизни скользящего refresh-токена
 }
 
 

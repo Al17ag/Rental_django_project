@@ -3,15 +3,15 @@ from listings.models import Listing
 from listings.serializers import ListingSerializer
 from rest_framework.permissions import IsAuthenticated
 
-# Создаем класс представления, унаследованный от ListAPIView
+# Erstelle eine View-Klasse, die von ListAPIView erbt
 class SearchListView(generics.ListAPIView):
-    serializer_class = ListingSerializer        # сериализатор, который будет использоваться для преобразования объектов
-    permission_classes = [IsAuthenticated]      # доступ только для аутентифицированных пользователей
+    serializer_class = ListingSerializer        # Der Serializer, der verwendet wird, um Objekte zu konvertieren
+    permission_classes = [IsAuthenticated]      # Zugriff nur für authentifizierte Benutzer
 
-    def get_queryset(self):                             # метод для получения списка объектов
-        queryset = Listing.objects.filter(status=True)  # фильтруем объекты по статусу
+    def get_queryset(self):                             # Methode zum Abrufen der Objektliste
+        queryset = Listing.objects.filter(status=True)  # Filtere Objekte nach Status
 
-        # Получаем параметры из GET-запроса
+        # Hole die Parameter aus der GET-Anfrage
         min_price = self.request.GET.get('min_price')
         max_price = self.request.GET.get('max_price')
         location = self.request.GET.get('location')
@@ -20,22 +20,22 @@ class SearchListView(generics.ListAPIView):
         sort_by = self.request.GET.get('sort_by', 'title')
         order = self.request.GET.get('order', 'asc')
 
-        # Фильтрация по разным критериям
+        # Filterung nach verschiedenen Kriterien
         if min_price:
-            queryset = queryset.filter(price__gte=min_price)        # Фильтр по минимальной цене
+            queryset = queryset.filter(price__gte=min_price)        # Filter nach Mindestpreis
         if max_price:
-            queryset = queryset.filter(price__lte=max_price)        # Фильтр по максимальной цене
+            queryset = queryset.filter(price__lte=max_price)        # Filter nach Höchstpreis
         if location:
             queryset = queryset.filter(location__icontains=location)
         if rooms:
             queryset = queryset.filter(rooms__gte=rooms)
         if property_type:
-            queryset = queryset.filter(property_type__icontains=property_type)  # Фильтр по типу недвижимости
+            queryset = queryset.filter(property_type__icontains=property_type)  # Filter nach Immobilientyp
 
-        # Сортировка
+        # Sortierung
         if sort_by in ['title', 'price', 'created_at']:
             if order == 'asc':
-                queryset = queryset.order_by(sort_by)               # Сортируем по возрастанию
+                queryset = queryset.order_by(sort_by)               # Sortieren in aufsteigender Reihenfolge
             else:
                 queryset = queryset.order_by(f'-{sort_by}')
 

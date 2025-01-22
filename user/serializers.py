@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import CustomUser
 
-# Сериализатор для модели пользователя
+# Serialisierer für Benutzermodell
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser

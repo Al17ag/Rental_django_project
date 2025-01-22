@@ -10,7 +10,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import api_view, permission_classes
 
 
-# Представление для регистрации пользователя
+# Ansicht für die Benutzerregistrierung
 class RegisterAPIView(APIView):
     permission_classes = [AllowAny]
 
@@ -19,34 +19,34 @@ class RegisterAPIView(APIView):
         if serializer.is_valid():
             user = serializer.save()
             login(request, user)
-            return Response({'message': 'User registered successfully'}, status=status.HTTP_201_CREATED)
+            return Response({'message': 'Benutzer erfolgreich registriert'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# Представление для логина
+# Ansicht für das Login
 @api_view(['POST'])
-@permission_classes([AllowAny])                                          # Добавляем разрешение на доступ для всех
+@permission_classes([AllowAny])  # Zugriff für alle Benutzer erlauben
 def login_view(request):
-    email = request.data.get('email')                                    # Извлекаем email из запроса
+    email = request.data.get('email')  # E-Mail aus der Anfrage extrahieren
     password = request.data.get('password')
-    user = authenticate(request, username=email, password=password)     # аутентификация пользователя по email
-    if user is not None:                # Если пользователь найден
-        login(request, user)            # Логиним пользователя
-        return Response({'message': 'Logged in successfully'}, status=status.HTTP_200_OK)
-    return Response({'error': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
+    user = authenticate(request, username=email, password=password)  # Benutzer basierend auf E-Mail authentifizieren
+    if user is not None:  # Wenn der Benutzer gefunden wird
+        login(request, user)  # Benutzer einloggen
+        return Response({'message': 'Erfolgreich eingeloggt'}, status=status.HTTP_200_OK)
+    return Response({'error': 'Ungültige Anmeldedaten'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-# Представление для логаута
+# Ansicht für das Logout
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])                 #ограничения доступа только для аутентифицированных пользователей
+@permission_classes([IsAuthenticated])  # Zugriff nur für authentifizierte Benutzer
 def logout_view(request):
     logout(request)
-    return Response({'message': 'Logged out successfully'}, status=status.HTTP_200_OK)
+    return Response({'message': 'Erfolgreich ausgeloggt'}, status=status.HTTP_200_OK)
 
 
-# Представление для получения деталей пользователя
+# Ansicht für die Benutzerinformationen
 class UserDetailView(generics.RetrieveAPIView):
-    queryset = CustomUser.objects.all()             # Запрос для получения всех пользователей
+    queryset = CustomUser.objects.all()  # Anfrage für alle Benutzer
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]          # Разрешаем доступ только аутентифицированным пользователям
+    permission_classes = [IsAuthenticated]  # Zugriff nur für authentifizierte Benutzer
     renderer_classes = [JSONRenderer]

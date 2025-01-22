@@ -3,6 +3,22 @@
 Email: admin2@mail.com
 username: admin
 Password: ende33
+
+{
+  "username": "admin",
+  "password": "ende33"
+}
+----------------------------------------------
+{
+  "email": "admin2@mail.com",
+  "password": "ende33"
+}
+----------------------------------------------
+{
+    "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTczMjYxNTE2MywiaWF0IjoxNzMyMTgzMTYzLCJqdGkiOiJiNjU5NTQ2ZGU1MTE0OThjYWQ4MjA3ZTdmOWZiNDBlNSIsInVzZXJfaWQiOjF9.lHDUxAbx73WfX7aSYFGg30YrAM9ls5TYmR0qD66hkss",
+    "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyMjcxNTE1LCJpYXQiOjE3MzIxODMxNjMsImp0aSI6ImY5YjNhMzZmM2VmMDQ1MzRiMTNlZjM1YzJmMjlhYjdkIiwidXNlcl9pZCI6MX0.tpwGYVyafD8U_36wo0ctrpWT8R15B4vhvBRHJ9syfto"
+}
+
 -------------------------------------------------
 ---user
 Username:max
@@ -13,3 +29,9 @@ Email:elon@mail.com
 anna@gmx.de
 Password: anna1112223
 -------------------------------------------------
+---------------------POSTMAN--------------------------------------------------------------------------------------------
+http://127.0.0.1:8000/api/token/refresh/            обновленеие токена
+http://127.0.0.1:8000/api/listings/ratings/         все рейтинги
+http://127.0.0.1:8000/api/listings/ratings/1/       рейтинг по id + access token
+
+http://127.0.0.1:8000/swagger/                      Просмотр документации

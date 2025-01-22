@@ -9,24 +9,24 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 
 
-# ViewSet для управления объявлениями
+# ViewSet zur Verwaltung von Anzeigen
 class ListingViewSet(viewsets.ModelViewSet):
-    queryset = Listing.objects.all()               # общий запрос для всех объявлений
+    queryset = Listing.objects.all()  # Allgemeine Abfrage für alle Anzeigen
     serializer_class = ListingSerializer
 
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)  # Указываем владельца объявления как текущего пользователя
+        serializer.save(owner=self.request.user)  # Setzen des Besitzers der Anzeige auf den aktuellen Benutzer
 
-    @action(detail=True, methods=['post'], url_path='toggle-status')  # переключения статуса объявления
-    def toggle_status(self, request, pk=None):                        # Метод для обработки запросов к toggle-status
+    @action(detail=True, methods=['post'], url_path='toggle-status')  # Umschalten des Status der Anzeige
+    def toggle_status(self, request, pk=None):  # Methode zur Bearbeitung von Anfragen zu toggle-status
         listing = get_object_or_404(Listing, pk=pk)
         listing.status = not listing.status
         listing.save()
         return Response({'status': 'success', 'new_status': listing.status})
 
 
-# Представление для поиска и фильтрации объявлений
-class ListingListView(generics.ListAPIView):  # получения списка объявлений
+# Ansicht zur Suche und Filterung von Anzeigen
+class ListingListView(generics.ListAPIView):  # Abrufen der Liste der Anzeigen
     serializer_class = ListingSerializer
     permission_classes = [IsAuthenticated]
 
@@ -51,7 +51,7 @@ class ListingListView(generics.ListAPIView):  # получения списка 
         if property_type:
             queryset = queryset.filter(property_type__icontains=property_type)
 
-        # Добавление сортировки по популярности
+        # Hinzufügen der Sortierung nach Popularität
         if sort_by in ['title', 'price', 'date_added', 'popularity']:
             if order == 'asc':
                 queryset = queryset.order_by(sort_by)
@@ -61,9 +61,9 @@ class ListingListView(generics.ListAPIView):  # получения списка 
         return queryset
 
 
-# ViewSet для управления рейтингами
+# ViewSet zur Verwaltung von Bewertungen
 class RatingViewSet(viewsets.ModelViewSet):
     queryset = Rating.objects.all()
     serializer_class = RatingSerializer
-    authentication_classes = [SessionAuthentication, BasicAuthentication]  # Добавили классы аутентификации            *
-    permission_classes = [IsAuthenticated]                                 # Требование аутентификации
+    authentication_classes = [SessionAuthentication, BasicAuthentication]  # Hinzufügen von Authentifizierungsklassen
+    permission_classes = [IsAuthenticated]  # Anforderung der Authentifizierung

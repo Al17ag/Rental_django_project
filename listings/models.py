@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 
 
-# Модель объявления
+# Modell für eine Anzeige
 class Listing(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
@@ -11,10 +11,10 @@ class Listing(models.Model):
     rooms = models.IntegerField()
     property_type = models.CharField(max_length=50, choices=[
         ('apartment', 'Apartment'),
-        ('house', 'House'),
+        ('house', 'Haus'),
         ('studio', 'Studio'),
-        ('townhouse', 'Townhouse'),
-        ('cottage', 'Cottage'),
+        ('townhouse', 'Reihenhaus'),
+        ('cottage', 'Hütte'),
         ('villa', 'Villa')
     ])
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -22,23 +22,23 @@ class Listing(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     status = models.BooleanField(default=True)
     date_added = models.DateTimeField(auto_now_add=True)
-    popularity = models.FloatField(default=0)  # Поле для среднего рейтинга
+    popularity = models.FloatField(default=0)  # Feld für den durchschnittlichen Bewertung
 
     def __str__(self):
         return self.title
 
-    # Метод для получения среднего рейтинга
+    # Methode zur Berechnung der durchschnittlichen Bewertung
     def get_average_rating(self):
         ratings = self.rating_set.all()
         return ratings.aggregate(models.Avg('rating'))['rating__avg'] if ratings else 0
 
-    # Метод для обновления популярности
+    # Methode zur Aktualisierung der Popularität
     def update_popularity(self):
         self.popularity = self.get_average_rating()
         self.save()
 
 
-# Модель рейтинга объявлений
+# Modell für die Bewertung von Anzeigen
 class Rating(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE)

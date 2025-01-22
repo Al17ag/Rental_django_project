@@ -8,36 +8,34 @@ from drf_yasg import openapi
 from django.conf import settings
 
 
-# корневой ответ для API
+# Wurzelantwort für die API
 def api_root(request):
     return JsonResponse({
-        "message": "Welcome to the API root. Please navigate to /api/ to access the API endpoints."
+        "message": "Willkommen bei der API-Wurzel. Bitte navigieren Sie zu /api/, um auf die API-Endpunkte zuzugreifen."
     })
 
 
-# Устанавливаем представление для документации API
+# Definiere das Ansicht für die API-Dokumentation
 schema_view = get_schema_view(
     openapi.Info(
-        title="API Documentation",
+        title="API Dokumentation",
         default_version='v1',
-        description="API documentation for your project",
+        description="API-Dokumentation für dein Projekt",
     ),
     public=True,
-    permission_classes=(permissions.AllowAny,), # Разрешаем доступ без аутентификации
+    permission_classes=(permissions.AllowAny,),  # Erlaube Zugriff ohne Authentifizierung
 )
-
-
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/user/', include('user.urls', namespace='user')),                      # API маршруты для пользователей
-    path('api/listings/', include('listings.urls', namespace='listings')),          # API маршруты для объявлений
-    path('api/booking/', include('booking.urls', namespace='booking')),             # API маршруты для бронирований
-    path('api/search/', include('search.urls', namespace='search')),                # API маршруты для поиска
+    path('api/user/', include('user.urls', namespace='user')),  # API-Routen für Benutzer
+    path('api/listings/', include('listings.urls', namespace='listings')),  # API-Routen für Angebote
+    path('api/booking/', include('booking.urls', namespace='booking')),  # API-Routen für Buchungen
+    path('api/search/', include('search.urls', namespace='search')),  # API-Routen für die Suche
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    path('', api_root, name='api_root'),                                                # Корневой маршрут
-    #path('', include('listings.urls')),
+    path('', api_root, name='api_root'),  # Root-Routen
+    # path('', include('listings.urls')),
 ]

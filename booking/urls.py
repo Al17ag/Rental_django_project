@@ -4,10 +4,10 @@ from .views import BookingViewSet
 
 app_name = 'booking'
 
-#  регистрация ViewSet для бронирований
+# Registrierung des ViewSet für Buchungen
 router = DefaultRouter()
 router.register(r'bookings', BookingViewSet)
 
 urlpatterns = [
-    path('', include(router.urls)),  # Включение маршрутов роутера
+    path('', include(router.urls)),  # Einschluss der Routen des Routers
 ]

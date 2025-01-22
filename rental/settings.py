@@ -1,26 +1,26 @@
 # ------------------------------------12.11.2024-----------------------------------
 import pymysql
+
 pymysql.install_as_MySQLdb()
-from dotenv import load_dotenv  # загрузка переменных окружения
+from dotenv import load_dotenv  # Laden von Umgebungsvariablen
 from pathlib import Path
+
 load_dotenv()
 import os
 from datetime import timedelta
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'. # Определяем базовую директорию проекта
+# Definiere das Basisverzeichnis des Projekts
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-# SECURITY WARNING: keep the secret key used in production secret!
-# SECURITY WARNING: don't run with debug turned on in production!
+# Schnellstart-Entwicklungs-Einstellungen - nicht geeignet für die Produktion
+# Siehe https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
+# SICHERHEITSHINWEIS: Bewahren Sie den geheimen Schlüssel für die Produktion geheim!
+# SICHERHEITSHINWEIS: Führen Sie das Projekt nicht mit aktiviertem Debug-Modus in der Produktion aus!
 SECRET_KEY = os.getenv('SECRET_KEY')
-DEBUG = os.getenv('DEBUG') == 'True'            # режим отладки из переменных окружения
-ALLOWED_HOSTS = ['*']                           # Разрешаем всем хостам доступ к проекту
+DEBUG = os.getenv('DEBUG') == 'True'  # Debug-Modus aus den Umgebungsvariablen
+ALLOWED_HOSTS = ['*']  # Erlaube allen Hosts den Zugriff auf das Projekt
 
-
-# Application definition
+# Anwendungskonfiguration
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -38,11 +38,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'django_extensions',
-    'drf_yasg',                         # документация API http://127.0.0.1:8000/swagger/   http://127.0.0.1:8000/redoc/
-
+    'drf_yasg',  # API-Dokumentation http://127.0.0.1:8000/swagger/   http://127.0.0.1:8000/redoc/
 ]
 
-# промежуточное ПО (middleware), которое будет использоваться в проекте
+# Middleware, die im Projekt verwendet wird
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -73,15 +72,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'rental.wsgi.application'
 
-# BrowsableAPIRenderer встроен в Django REST framework и позволяет тестировать
-# API запросы в браузере без дополнительных установок
+# BrowsableAPIRenderer ist in Django REST framework integriert und ermöglicht das Testen
+# von API-Anfragen im Browser ohne zusätzliche Installationen
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
     ],
-    
+
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
@@ -92,8 +91,7 @@ REST_FRAMEWORK = {
     ],
 }
 
-
-# Database
+# Datenbank
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 # --------------------------------------sqlite3------------------------------------------------------
 # DATABASES = {
@@ -115,13 +113,13 @@ DATABASES = {
         'PORT': os.getenv('DB_PORT'),
         'OPTIONS': {
             'ssl': {
-                'check_hostname': False,  # Отключение проверки имени хоста
+                'check_hostname': False,  # Deaktivierung der Hostnamenüberprüfung
             },
         },
     }
 }
 
-# Password validation
+# Passwortvalidierung
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -139,16 +137,16 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Указываем кастомную модель пользователя
+# Angabe des benutzerdefinierten Benutzermodells
 AUTH_USER_MODEL = 'user.CustomUser'
 
-# Используется стандартный бэкенд аутентификации Django
-AUTHENTICATION_BACKENDS = ( 'django.contrib.auth.backends.ModelBackend', )
+# Standard-Django-Authentifizierungsbackend
+AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',)
 
-# Настройки для библиотеки Simple JWT-----------------------------------------------------------------------------------
+# Einstellungen für die Simple JWT-Bibliothek-----------------------------------------------------------------------------------
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=180),      # Время жизни access-токена ( минут)
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=5),          # Время жизни refresh-токена ( день)
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=180),  # Lebensdauer des Access-Tokens (in Minuten)
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=5),  # Lebensdauer des Refresh-Tokens (in Tagen)
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,
     'UPDATE_LAST_LOGIN': False,
@@ -172,12 +170,11 @@ SIMPLE_JWT = {
     'JTI_CLAIM': 'jti',
 
     'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
-    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=180),         # Время жизни скользящего access-токена
-    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=5),      # Время жизни скользящего refresh-токена
+    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=180),  # Lebensdauer des gleitenden Access-Tokens
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=5),  # Lebensdauer des gleitenden Refresh-Tokens
 }
 
-
-# Internationalization
+# Internationalisierung
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
@@ -188,15 +185,12 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
+# Statische Dateien (CSS, JavaScript, Bilder)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
 
-
-
-# Default primary key field type
+# Standard-Primärschlüssel-Feldtyp
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

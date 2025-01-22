@@ -2,7 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
-# Кастомная модель пользователя
+# Custom-Modells
 class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
     groups = models.ManyToManyField(
@@ -18,7 +18,7 @@ class CustomUser(AbstractUser):
         help_text='Specific permissions for this user.'
     )
 
-    USERNAME_FIELD = 'email'            # поле для входа
+    USERNAME_FIELD = 'email'            # Anmeldefeld
     REQUIRED_FIELDS = ['username']
 
     def __str__(self):
